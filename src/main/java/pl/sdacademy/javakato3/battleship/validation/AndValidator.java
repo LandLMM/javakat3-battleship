@@ -13,11 +13,10 @@ public class AndValidator implements Validator {
 
     @Override
     public boolean isValid(Ship ship, PlayersBoard board) {
+        boolean validationSucceeded = true;
         for (Validator subValidator : subValidators) {
-            if (!subValidator.isValid(ship, board)) {
-                return false;
-            }
+            validationSucceeded &= subValidator.isValid(ship, board);
         }
-        return true;
+        return validationSucceeded;
     }
 }
