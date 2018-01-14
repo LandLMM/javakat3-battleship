@@ -127,16 +127,51 @@ public class GameMasterTest {
 //        fail();
     }
 
+    @Test
+    public void shouldAskFirstPlayerForTheirShot() {
+        gameMaster.setCurrentPlayer(humanPlayer);
 
+        gameMaster.startTurn();
 
+        verify(humanPlayer).getNextShot();
+    }
 
+    @Test
+    public void shouldUpdateSeaMapWithShipHitOnShipHit() {
+        gameMaster.setCurrentPlayer(humanPlayer);
+        Point playersShot = new Point(2, 4);
+        when(humanPlayer.getNextShot()).thenReturn(playersShot);
+        when(computerPlayersBoard.getSeaMapElement(eq(playersShot))).thenReturn(BoardField.SHIP);
 
+        gameMaster.startTurn();
 
+        verify(computerPlayersBoard).setSeaMapElement(eq(playersShot), eq(BoardField.SHIP_HIT));
+    }
 
+    @Test
+    public void shouldUpdateShipStatusAfterHit() {
 
+    }
 
+    @Test
+    public void shouldUpdateSeaMapWithMissWhenMissed() {
+        gameMaster.setCurrentPlayer(computerPlayer);
+        Point playersShot = new Point(2, 4);
+        when(computerPlayer.getNextShot()).thenReturn(playersShot);
+        when(humanPlayersBoard.getSeaMapElement(eq(playersShot))).thenReturn(BoardField.WATER);
 
+        gameMaster.startTurn();
 
+        verify(humanPlayersBoard).setSeaMapElement(eq(playersShot), eq(BoardField.MISS));
+    }
 
+    @Test
+    public void shouldNotChangeCurrentUserAfterHit() {
 
+    }
+
+    @Test
+    public void shouldChangeCurrentUserAfterMissedShot() {
+
+    }
 }

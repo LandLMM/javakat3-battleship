@@ -14,6 +14,7 @@ public class GameMaster {
     private final GameBoard gameBoard;
     private final Validator shipPositionValidator;
     private final List<ShipType> shipTypesToBePlaced;
+    private Player currentPlayer;
 
     public GameMaster(Player humanPlayer, Player computerPlayer, GameBoard gameBoard, Validator shipPositionValidator, List<ShipType> shipTypesToBePlaced) {
         this.humanPlayer = humanPlayer;
@@ -69,6 +70,43 @@ public class GameMaster {
             }
         }
     }
+
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+
+    public void startTurn() {
+        Point shot = currentPlayer.getNextShot();
+        PlayersBoard opponentsBoard = getOpponentsBoard();
+        BoardField currentSeaElement = Optional.ofNullable(opponentsBoard.getSeaMapElement(shot))
+                .orElse(BoardField.NONE);
+        switch (currentSeaElement) {
+            case WATER:
+                opponentsBoard.setSeaMapElement(shot, BoardField.MISS);
+                break;
+            case SHIP:
+                opponentsBoard.setSeaMapElement(shot, BoardField.SHIP_HIT);
+                break;
+        }
+    }
+
+    private PlayersBoard getOpponentsBoard() {
+        if (currentPlayer == humanPlayer) {
+            return gameBoard.getOtherPlayerBoard();
+        } else {
+            return gameBoard.getHumanPlayerBoard();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
 
 
 }
