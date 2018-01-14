@@ -51,20 +51,4 @@ public class PlayersBoard {
     public void addShip(Ship ship) {
         ships.add(ship);
     }
-
-
-
-
-
-
-    /*
-		seaMap - tablica tablic BoardField (10x10)
-		ships - lista statów
-		BoardField getSeaMapElement(int x, int y)
-		BoardField getSeaMapElement(Point p)
-		void setSeaMapElement(int x, int y, BoardField type)
-		void setSeaMapElement(Point p, BoardField type)
-		void addShip(Ship s)
-		LIst<Ship> getShips()
-     */
 }
