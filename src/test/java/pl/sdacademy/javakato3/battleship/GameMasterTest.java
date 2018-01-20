@@ -204,9 +204,10 @@ public class GameMasterTest {
 
     @Test
     public void shouldReturnHumanPlayerWhenComputerHasNoShips() {
-        when(humanPlayersBoard.getSeaMapElement(eq(4), eq(1))).thenReturn(BoardField.SHIP);
+        gameMaster = spy(gameMaster);
         when(computerPlayersBoard.getSeaMapElement(anyInt(), anyInt())).thenReturn(BoardField.WATER);
-        when(humanPlayersBoard.getSeaMapElement(anyInt(), anyInt())).thenReturn(BoardField.WATER);
+        when(humanPlayersBoard.getSeaMapElement(anyInt(), anyInt())).thenReturn(BoardField.SHIP);
+        when(gameMaster.isGameStarted()).thenReturn(true);
 
         Optional<Player> winner = gameMaster.getWinner();
 
@@ -215,12 +216,23 @@ public class GameMasterTest {
 
     @Test
     public void shouldReturnComputerPlayerWhenHumanHasNoShips() {
+        gameMaster = spy(gameMaster);
+        when(computerPlayersBoard.getSeaMapElement(anyInt(), anyInt())).thenReturn(BoardField.SHIP);
+        when(humanPlayersBoard.getSeaMapElement(anyInt(), anyInt())).thenReturn(BoardField.WATER);
+        when(gameMaster.isGameStarted()).thenReturn(true);
 
+        Optional<Player> winner = gameMaster.getWinner();
+
+        assertEquals(computerPlayer, winner.get());
     }
 
     @Test
     public void shouldReturnEmptyOptionalWhenGameHasNotStarted() {
-
+        //given
+        //when
+        Optional<Player> winner = gameMaster.getWinner();
+        //then
+        assertEquals(Optional.empty(), winner);
     }
 
 

@@ -15,6 +15,7 @@ public class GameMaster {
     private final Validator shipPositionValidator;
     private final List<ShipType> shipTypesToBePlaced;
     private Player currentPlayer;
+    private boolean gameStarted;
 
     public GameMaster(Player humanPlayer, Player computerPlayer, GameBoard gameBoard, Validator shipPositionValidator, List<ShipType> shipTypesToBePlaced) {
         this.humanPlayer = humanPlayer;
@@ -42,7 +43,9 @@ public class GameMaster {
                     updatePlayersBoardWithShip(computerPlayersShip, gameBoard.getOtherPlayerBoard());
                 }
             }
+            gameBoard.updateObservers();
         }
+        gameStarted = true;
     }
 
     private void updatePlayersBoardWithShip(Ship playersShip, PlayersBoard playersBoard) {
@@ -93,6 +96,7 @@ public class GameMaster {
                 opponentsBoard.setSeaMapElement(shot, BoardField.SHIP_HIT);
                 break;
         }
+        gameBoard.updateObservers();
     }
 
     private PlayersBoard getOpponentsBoard() {
@@ -108,8 +112,14 @@ public class GameMaster {
     }
 
     public Optional<Player> getWinner() {
+        if (!isGameStarted()) {
+            return Optional.empty();
+        }
         if (!thereAreShipsLeftOnBoard(gameBoard.getOtherPlayerBoard())) {
             return Optional.of(humanPlayer);
+        }
+        if (!thereAreShipsLeftOnBoard(gameBoard.getHumanPlayerBoard())) {
+            return Optional.of(computerPlayer);
         }
         return Optional.empty();
     }
@@ -125,16 +135,7 @@ public class GameMaster {
         return false;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
+    public boolean isGameStarted() {
+        return gameStarted;
+    }
 }
