@@ -12,6 +12,7 @@ import pl.sdacademy.javakato3.battleship.validation.Validator;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
@@ -167,11 +168,66 @@ public class GameMasterTest {
 
     @Test
     public void shouldNotChangeCurrentUserAfterHit() {
+        gameMaster.setCurrentPlayer(humanPlayer);
+        Point playersShot = new Point(3, 6);
+        when(humanPlayer.getNextShot()).thenReturn(playersShot);
+        when(computerPlayersBoard.getSeaMapElement(eq(playersShot))).thenReturn(BoardField.SHIP);
 
+        gameMaster.startTurn();
+
+        Player nextTurnPlayer = gameMaster.getCurrentPlayer();
+        assertEquals(humanPlayer, nextTurnPlayer);
     }
 
     @Test
     public void shouldChangeCurrentUserAfterMissedShot() {
+        gameMaster.setCurrentPlayer(humanPlayer);
+        Point playersShot = new Point(3, 6);
+        when(humanPlayer.getNextShot()).thenReturn(playersShot);
+        when(computerPlayersBoard.getSeaMapElement(eq(playersShot))).thenReturn(BoardField.WATER);
+
+        gameMaster.startTurn();
+
+        Player nextTurnPlayer = gameMaster.getCurrentPlayer();
+        assertEquals(computerPlayer, nextTurnPlayer);
+    }
+
+    @Test
+    public void shouldReturnEmptyOptionalWhenBothPlayersHaveShips() {
+        when(computerPlayersBoard.getSeaMapElement(anyInt(), anyInt())).thenReturn(BoardField.SHIP);
+        when(humanPlayersBoard.getSeaMapElement(anyInt(), anyInt())).thenReturn(BoardField.SHIP);
+
+        Optional<Player> winner = gameMaster.getWinner();
+
+        assertEquals(Optional.empty(), winner);
+    }
+
+    @Test
+    public void shouldReturnHumanPlayerWhenComputerHasNoShips() {
+        when(humanPlayersBoard.getSeaMapElement(eq(4), eq(1))).thenReturn(BoardField.SHIP);
+        when(computerPlayersBoard.getSeaMapElement(anyInt(), anyInt())).thenReturn(BoardField.WATER);
+        when(humanPlayersBoard.getSeaMapElement(anyInt(), anyInt())).thenReturn(BoardField.WATER);
+
+        Optional<Player> winner = gameMaster.getWinner();
+
+        assertEquals(humanPlayer, winner.get());
+    }
+
+    @Test
+    public void shouldReturnComputerPlayerWhenHumanHasNoShips() {
 
     }
+
+    @Test
+    public void shouldReturnEmptyOptionalWhenGameHasNotStarted() {
+
+    }
+
+
+
+
+
+
+
+
 }

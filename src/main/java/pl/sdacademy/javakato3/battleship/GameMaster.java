@@ -83,6 +83,11 @@ public class GameMaster {
         switch (currentSeaElement) {
             case WATER:
                 opponentsBoard.setSeaMapElement(shot, BoardField.MISS);
+                if (currentPlayer == humanPlayer) {
+                    currentPlayer = computerPlayer;
+                } else {
+                    currentPlayer = humanPlayer;
+                }
                 break;
             case SHIP:
                 opponentsBoard.setSeaMapElement(shot, BoardField.SHIP_HIT);
@@ -97,6 +102,29 @@ public class GameMaster {
             return gameBoard.getHumanPlayerBoard();
         }
     }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public Optional<Player> getWinner() {
+        if (!thereAreShipsLeftOnBoard(gameBoard.getOtherPlayerBoard())) {
+            return Optional.of(humanPlayer);
+        }
+        return Optional.empty();
+    }
+
+    private boolean thereAreShipsLeftOnBoard(PlayersBoard board) {
+        for (int y = 0; y < 10; y++) {
+            for (int x = 0; x < 10; x++) {
+                if (board.getSeaMapElement(x, y) == BoardField.SHIP) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 
 
 
