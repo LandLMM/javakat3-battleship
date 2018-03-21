@@ -117,14 +117,4 @@ public class PlayersBoardTest {
         assertEquals(1, ships.size());
     }
 
-
-
-
-
-
-
-
-
-
-
 }

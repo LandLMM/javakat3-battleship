@@ -17,14 +17,16 @@ public class Main {
         ConsoleUI humanUI = new ConsoleUI();
         Player humanPlayer = new DefaultPlayer(humanUI);
 
-        RandomComputerUI computerUI = new RandomComputerUI();
-        Player computerPlayer = new DefaultPlayer(computerUI);
+        RandomComputerUI randomComputerUI = new RandomComputerUI();
+        Player computerPlayer = new DefaultPlayer(randomComputerUI);
 
         PlayersBoard humanPlayersBoard = new PlayersBoard();
-        PlayersBoard computerPlayersBoard = new PlayersBoard();
-        GameBoard gameBoard = new GameBoard(humanPlayersBoard, computerPlayersBoard);
+        PlayersBoard computerPlayerBoard = new PlayersBoard();
+
+
+        GameBoard gameBoard = new GameBoard(humanPlayersBoard, computerPlayerBoard);
         gameBoard.registerUI(humanUI);
-        gameBoard.registerUI(computerUI);
+        gameBoard.registerUI(randomComputerUI);
 
         List<ShipType> shipTypes = new ArrayList<>();
         shipTypes.add(ShipType.BATTLESHIP);
@@ -32,9 +34,10 @@ public class Main {
 
         Validator shipPositionValidator = new AndValidator(
                 new CannotTouchValidator(),
-                new ShipOutOfBoundsValidator(),
+                new ShipOutOfBoundValidator(),
                 new StartOnAMapValidator()
         );
+
 
         GameMaster gameMaster = new GameMaster(
                 humanPlayer,
@@ -46,6 +49,6 @@ public class Main {
         gameMaster.setCurrentPlayer(humanPlayer);
 
         new GameMasterThread(gameMaster).start();
-
     }
+
 }

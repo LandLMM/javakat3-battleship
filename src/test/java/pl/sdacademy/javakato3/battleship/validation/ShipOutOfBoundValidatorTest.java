@@ -12,17 +12,19 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class ShipOutOfBoundsValidatorTest {
+public class ShipOutOfBoundValidatorTest {
 
-    private ShipOutOfBoundsValidator validator;
+    private ShipOutOfBoundValidator validator;
 
     @Before
     public void init() {
-        validator = new ShipOutOfBoundsValidator();
+
+
+        validator = new ShipOutOfBoundValidator();
     }
 
     @Test
-    public void shouldNotValidateHorizontalShipIfOutOfBound() {
+    public void shouldNotValidateWhenHorizontalShipOutOfBound() {
         Ship shipToValidate = mock(Ship.class);
         when(shipToValidate.getPosition()).thenReturn(new Point(8, 3));
         when(shipToValidate.isHorizontal()).thenReturn(true);
@@ -31,8 +33,10 @@ public class ShipOutOfBoundsValidatorTest {
 
         boolean result = validator.isValid(shipToValidate, boardToValidate);
 
+
         assertFalse(result);
     }
+
 
     @Test
     public void shouldNotValidateVerticalShipIfOutOfBound() {
@@ -44,8 +48,10 @@ public class ShipOutOfBoundsValidatorTest {
 
         boolean result = validator.isValid(shipToValidate, boardToValidate);
 
-        assertFalse(result);
+
+        assertTrue(result);
     }
+
 
     @Test
     public void shouldValidateProperlyPlacedShip() {
@@ -53,11 +59,13 @@ public class ShipOutOfBoundsValidatorTest {
         when(shipToValidate.getPosition()).thenReturn(new Point(4, 3));
         when(shipToValidate.isHorizontal()).thenReturn(true);
         when(shipToValidate.getType()).thenReturn(ShipType.DESTROYER);
+
+
         PlayersBoard boardToValidate = mock(PlayersBoard.class);
 
         boolean result = validator.isValid(shipToValidate, boardToValidate);
 
+
         assertTrue(result);
     }
-
 }

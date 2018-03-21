@@ -6,7 +6,10 @@ import pl.sdacademy.javakato3.battleship.model.ShipType;
 import java.awt.*;
 
 public interface Player {
+
     Ship getNextShip(ShipType type);
+
     Point getNextShot();
-    void sendMessage(String message);
+
+    void sendMessage(String s);
 }

@@ -11,33 +11,42 @@ public class RandomComputerUI implements UserInterface {
 
     @Override
     public void printMaps(GameBoard gameBoard) {
-        opponentsBoard = gameBoard.getHumanPlayerBoard();
+        opponentsBoard = gameBoard.getOtherPlayerBoard();
     }
 
     @Override
     public void notifyUser(String message) {
+
     }
 
     @Override
-    public Point askUserForShot() {
+    public Point askUserForShoot() {
+
         Point point;
-        Random randomGenerator = new Random();
         do {
+            Random randomGenerator = new Random();
             int x = randomGenerator.nextInt(10);
             int y = randomGenerator.nextInt(10);
             point = new Point(x, y);
-        } while (opponentsBoard.getSeaMapElement(point) == BoardField.MISS ||
+        }
+        while
+                (opponentsBoard.getSeaMapElement(point) == BoardField.MISS ||
                 opponentsBoard.getSeaMapElement(point) == BoardField.SHIP_HIT);
+        {
+
+        }
         return point;
     }
 
     @Override
-    public Ship askUserForNewShip(ShipType type) {
+    public Ship askUserForNewShip(ShipType shipType) {
         Random randomGenerator = new Random();
         int x = randomGenerator.nextInt(10);
         int y = randomGenerator.nextInt(10);
         Point shipLocation = new Point(x, y);
         boolean isHorizontal = randomGenerator.nextBoolean();
-        return new Ship(type, isHorizontal, shipLocation);
+
+        return new Ship(shipType, isHorizontal, shipLocation);
+
     }
 }

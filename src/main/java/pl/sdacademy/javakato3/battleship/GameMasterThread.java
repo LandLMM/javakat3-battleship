@@ -10,12 +10,13 @@ public class GameMasterThread extends Thread {
         this.gameMaster = gameMaster;
     }
 
+
     @Override
     public void run() {
         gameMaster.placeShips();
-
         while (gameMaster.getWinner().equals(Optional.empty())) {
             gameMaster.startTurn();
+
         }
 
         gameMaster.getWinner().get().sendMessage("You won!");

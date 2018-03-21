@@ -5,6 +5,7 @@ import pl.sdacademy.javakato3.battleship.model.PlayersBoard;
 import pl.sdacademy.javakato3.battleship.model.Ship;
 
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.booleanThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -12,6 +13,7 @@ public class AndValidatorTest {
 
     @Test
     public void shouldValidateWhenNoSubValidators() {
+
         Ship shipToValidate = mock(Ship.class);
         PlayersBoard boardToValidate = mock(PlayersBoard.class);
         AndValidator validator = new AndValidator();
@@ -23,7 +25,6 @@ public class AndValidatorTest {
 
     @Test
     public void shouldValidateWhenAllSubValidatorsValidated() {
-        // given
         Ship shipToValidate = mock(Ship.class);
         PlayersBoard boardToValidate = mock(PlayersBoard.class);
 
@@ -34,17 +35,15 @@ public class AndValidatorTest {
         when(subValidator2.isValid(shipToValidate, boardToValidate)).thenReturn(true);
 
         Validator validator = new AndValidator(subValidator1, subValidator2);
-
-        // when
+        //when
         boolean result = validator.isValid(shipToValidate, boardToValidate);
-
-        // then
+        //then
         assertTrue(result);
+
     }
 
     @Test
-    public void shouldNotValidateWhenAtLeastOneSubValidatorFail() {
-        // given
+    public void shouldNotValidateWhenAllSubValidatorsFail() {
         Ship shipToValidate = mock(Ship.class);
         PlayersBoard boardToValidate = mock(PlayersBoard.class);
 
@@ -57,18 +56,19 @@ public class AndValidatorTest {
         Validator subValidator3 = mock(Validator.class);
         when(subValidator3.isValid(shipToValidate, boardToValidate)).thenReturn(false);
 
+
         Validator validator = new AndValidator(subValidator1, subValidator2, subValidator3);
 
-        // when
+        //when
         boolean result = validator.isValid(shipToValidate, boardToValidate);
 
-        // then
+        //then
         assertFalse(result);
+
     }
 
     @Test
-    public void shouldNotValidateWhenAllSubValidatorsFail() {
-        // given
+    public void shouldValidateWhenAllSubValidatorsFail() {
         Ship shipToValidate = mock(Ship.class);
         PlayersBoard boardToValidate = mock(PlayersBoard.class);
 
@@ -79,12 +79,12 @@ public class AndValidatorTest {
         when(subValidator2.isValid(shipToValidate, boardToValidate)).thenReturn(false);
 
         Validator validator = new AndValidator(subValidator1, subValidator2);
-
-        // when
+        //when
         boolean result = validator.isValid(shipToValidate, boardToValidate);
-
-        // then
+        //then
         assertFalse(result);
+
     }
+
 
 }

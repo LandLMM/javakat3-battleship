@@ -3,9 +3,12 @@ package pl.sdacademy.javakato3.battleship.ui;
 import pl.sdacademy.javakato3.battleship.model.*;
 
 import java.awt.*;
+import java.io.Console;
 
 public class ConsoleUI implements UserInterface {
+
     private JavaConsoleDelegate consoleDelegate = new JavaConsoleDelegate();
+
 
     @Override
     public void printMaps(GameBoard gameBoard) {
@@ -21,10 +24,10 @@ public class ConsoleUI implements UserInterface {
 
     private String getLine(int y, PlayersBoard board) {
         StringBuilder builder = new StringBuilder();
-        if (y+1 < 10) {
+        if (y + 1 < 10) {
             builder.append(" ");
         }
-        builder.append(y+1);
+        builder.append(y + 1);
         for (int x = 0; x < 10; x++) {
             Point address = new Point(x, y);
             BoardField mapElement = board.getSeaMapElement(address);
@@ -49,19 +52,19 @@ public class ConsoleUI implements UserInterface {
     @Override
     public void notifyUser(String message) {
         consoleDelegate.printToConsole(message);
+
     }
 
     @Override
-    public Point askUserForShot() {
-        consoleDelegate.printToConsole("Provide location of your shot (e.g. D5):");
+    public Point askUserForShoot() {
         return getPointFromUser();
     }
 
     @Override
     public Ship askUserForNewShip(ShipType type) {
-        consoleDelegate.printToConsole("Provide location of " + type + " ship (e.g. D5):");
+        consoleDelegate.printToConsole("Provide the location of " + type + " ship:");
         Point shipLocation = getPointFromUser();
-        consoleDelegate.printToConsole("Is ship horizontal (Y/N):");
+        consoleDelegate.printToConsole("Is ship horizontal (Y/N): ");
         String shipOrientation = consoleDelegate.readFromConsole();
         boolean isShipHorizontal = shipOrientation.toUpperCase().equals("Y");
         return new Ship(type, isShipHorizontal, shipLocation);
@@ -71,6 +74,7 @@ public class ConsoleUI implements UserInterface {
         String userInput = consoleDelegate.readFromConsole();
         if (userInput.length() < 2 || userInput.length() > 3) {
             return new Point(-1, -1);
+
         }
         userInput = userInput.toUpperCase();
         int x = userInput.charAt(0) - 'A';

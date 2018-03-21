@@ -8,7 +8,12 @@ import java.awt.*;
 
 public interface UserInterface {
     void printMaps(GameBoard gameBoard);
+
     void notifyUser(String message);
-    Point askUserForShot();
-    Ship askUserForNewShip(ShipType type);
+
+    Point askUserForShoot();
+
+    Ship askUserForNewShip(ShipType shipType);
+
+
 }

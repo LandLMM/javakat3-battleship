@@ -17,11 +17,13 @@ public class StartOnAMapValidatorTest {
 
     @Before
     public void init() {
+
         validator = new StartOnAMapValidator();
     }
 
+
     @Test
-    public void shouldNotValidateWhenXIsLessThen0() {
+    public void shouldNotValidateWhenXIsLessThan0() {
         Ship shipToValidate = mock(Ship.class);
         when(shipToValidate.getPosition()).thenReturn(new Point(-1, 5));
         PlayersBoard boardToValidate = mock(PlayersBoard.class);
@@ -32,18 +34,7 @@ public class StartOnAMapValidatorTest {
     }
 
     @Test
-    public void shouldNotValidateWhenYIsLessThen0() {
-        Ship shipToValidate = mock(Ship.class);
-        when(shipToValidate.getPosition()).thenReturn(new Point(5, -1));
-        PlayersBoard boardToValidate = mock(PlayersBoard.class);
-
-        boolean result = validator.isValid(shipToValidate, boardToValidate);
-
-        assertFalse(result);
-    }
-
-    @Test
-    public void shouldNotValidateWhenXIsGreaterThen9() {
+    public void shouldNotValidateWhenXIsGreaterThan9() {
         Ship shipToValidate = mock(Ship.class);
         when(shipToValidate.getPosition()).thenReturn(new Point(10, 5));
         PlayersBoard boardToValidate = mock(PlayersBoard.class);
@@ -54,7 +45,7 @@ public class StartOnAMapValidatorTest {
     }
 
     @Test
-    public void shouldNotValidateWhenYIsGreaterThen9() {
+    public void shouldNotValidateWhenYIsGreaterThan9() {
         Ship shipToValidate = mock(Ship.class);
         when(shipToValidate.getPosition()).thenReturn(new Point(5, 10));
         PlayersBoard boardToValidate = mock(PlayersBoard.class);
@@ -65,7 +56,7 @@ public class StartOnAMapValidatorTest {
     }
 
     @Test
-    public void shouldValidateProperlyPlacedShip() {
+    public void shouldNotValidateProperlyPlacedShip() {
         Ship shipToValidate = mock(Ship.class);
         when(shipToValidate.getPosition()).thenReturn(new Point(4, 7));
         PlayersBoard boardToValidate = mock(PlayersBoard.class);

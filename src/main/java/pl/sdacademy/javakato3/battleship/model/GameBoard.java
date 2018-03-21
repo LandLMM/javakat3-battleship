@@ -30,6 +30,13 @@ public class GameBoard {
         }
     }
 
+
+
+    /*    public GameBoard() {
+        this.humanPlayerBoard = new PlayersBoard();
+        this.otherPlayerBoard = new PlayersBoard();
+    }*/
+
     public PlayersBoard getHumanPlayerBoard() {
         return humanPlayerBoard;
     }
@@ -37,4 +44,6 @@ public class GameBoard {
     public PlayersBoard getOtherPlayerBoard() {
         return otherPlayerBoard;
     }
+
+
 }

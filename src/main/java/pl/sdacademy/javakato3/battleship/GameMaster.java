@@ -9,8 +9,10 @@ import java.util.List;
 import java.util.Optional;
 
 public class GameMaster {
+
+
     private final Player humanPlayer;
-    private final Player computerPlayer;
+    private Player computerPlayer;
     private final GameBoard gameBoard;
     private final Validator shipPositionValidator;
     private final List<ShipType> shipTypesToBePlaced;
@@ -27,23 +29,27 @@ public class GameMaster {
 
     public void placeShips() {
         for (ShipType shipType : shipTypesToBePlaced) {
-            boolean isHumanPlayersShipProperlyPlaced = false;
-            while(!isHumanPlayersShipProperlyPlaced) {
-                Ship humanPlayersShip = humanPlayer.getNextShip(shipType);
-                isHumanPlayersShipProperlyPlaced = shipPositionValidator.isValid(humanPlayersShip, gameBoard.getHumanPlayerBoard());
-                if (isHumanPlayersShipProperlyPlaced) {
-                    updatePlayersBoardWithShip(humanPlayersShip, gameBoard.getHumanPlayerBoard());
+
+            boolean gameSrated = true;
+            boolean isHumanShipProperlyPlaced = false;
+            while (!isHumanShipProperlyPlaced) {
+                Ship humanPlayerShip = humanPlayer.getNextShip(shipType);
+                isHumanShipProperlyPlaced = shipPositionValidator.isValid(humanPlayerShip, gameBoard.getHumanPlayerBoard());
+                if (isHumanShipProperlyPlaced) {
+                    updatePlayersBoardWithShip(humanPlayerShip, gameBoard.getHumanPlayerBoard());
                 }
             }
-            boolean isComputerPlayersShipProperlyPlaced = false;
-            while (!isComputerPlayersShipProperlyPlaced) {
+
+            boolean isComputerShipProperlyPlaced = false;
+            while (!isComputerShipProperlyPlaced) {
                 Ship computerPlayersShip = computerPlayer.getNextShip(shipType);
-                isComputerPlayersShipProperlyPlaced = shipPositionValidator.isValid(computerPlayersShip, gameBoard.getOtherPlayerBoard());
-                if (isComputerPlayersShipProperlyPlaced) {
+                isComputerShipProperlyPlaced = shipPositionValidator.isValid(computerPlayersShip, gameBoard.getOtherPlayerBoard());
+                if (isComputerShipProperlyPlaced) {
                     updatePlayersBoardWithShip(computerPlayersShip, gameBoard.getOtherPlayerBoard());
                 }
             }
             gameBoard.updateObservers();
+
         }
         gameStarted = true;
     }
@@ -51,25 +57,34 @@ public class GameMaster {
     private void updatePlayersBoardWithShip(Ship playersShip, PlayersBoard playersBoard) {
         playersBoard.addShip(playersShip);
         Optional<Ship> optionalShip = Optional.ofNullable(playersShip);
+
         int shipX = optionalShip
                 .map(Ship::getPosition)
                 .map(Point::getX)
                 .map(Double::intValue)
-                .orElse(Integer.MIN_VALUE);
+                .orElse(Integer.MAX_VALUE);
+        //(int) humanPlayerShip.getPosition().getX();
+
         int shipY = optionalShip
                 .map(Ship::getPosition)
                 .map(Point::getY)
                 .map(Double::intValue)
-                .orElse(Integer.MIN_VALUE);
+                .orElse(Integer.MAX_VALUE);
+        //(int) humanPlayerShip.getPosition().getY();
+
+
         int mastTotalNumber = optionalShip
                 .map(Ship::getType)
                 .map(ShipType::getSize)
                 .orElse(0);
+
         for (int mastNumber = 0; mastNumber < mastTotalNumber; mastNumber++) {
+
             if (playersShip.isHorizontal()) {
                 playersBoard.setSeaMapElement(shipX + mastNumber, shipY, BoardField.SHIP);
             } else {
                 playersBoard.setSeaMapElement(shipX, shipY + mastNumber, BoardField.SHIP);
+
             }
         }
     }
@@ -81,9 +96,9 @@ public class GameMaster {
     public void startTurn() {
         Point shot = currentPlayer.getNextShot();
         PlayersBoard opponentsBoard = getOpponentsBoard();
-        BoardField currentSeaElement = Optional.ofNullable(opponentsBoard.getSeaMapElement(shot))
+        BoardField currentseaElement = Optional.ofNullable(opponentsBoard.getSeaMapElement(shot))
                 .orElse(BoardField.NONE);
-        switch (currentSeaElement) {
+        switch (currentseaElement) {
             case WATER:
                 opponentsBoard.setSeaMapElement(shot, BoardField.MISS);
                 if (currentPlayer == humanPlayer) {
@@ -102,19 +117,25 @@ public class GameMaster {
     private PlayersBoard getOpponentsBoard() {
         if (currentPlayer == humanPlayer) {
             return gameBoard.getOtherPlayerBoard();
+
         } else {
             return gameBoard.getHumanPlayerBoard();
         }
+
     }
+
 
     public Player getCurrentPlayer() {
         return currentPlayer;
     }
 
     public Optional<Player> getWinner() {
+
         if (!isGameStarted()) {
             return Optional.empty();
+
         }
+
         if (!thereAreShipsLeftOnBoard(gameBoard.getOtherPlayerBoard())) {
             return Optional.of(humanPlayer);
         }
@@ -127,15 +148,18 @@ public class GameMaster {
     private boolean thereAreShipsLeftOnBoard(PlayersBoard board) {
         for (int y = 0; y < 10; y++) {
             for (int x = 0; x < 10; x++) {
-                if (board.getSeaMapElement(x, y) == BoardField.SHIP) {
+                if (board.getSeaMapElement(x, y) == BoardField.SHIP)
                     return true;
-                }
             }
+
         }
+
         return false;
     }
 
     public boolean isGameStarted() {
         return gameStarted;
     }
+
+
 }

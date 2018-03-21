@@ -7,6 +7,7 @@ import pl.sdacademy.javakato3.battleship.ui.UserInterface;
 import java.awt.*;
 
 public class DefaultPlayer implements Player {
+
     private UserInterface ui;
 
     public DefaultPlayer(UserInterface ui) {
@@ -18,9 +19,10 @@ public class DefaultPlayer implements Player {
         return ui.askUserForNewShip(type);
     }
 
+
     @Override
     public Point getNextShot() {
-        return ui.askUserForShot();
+        return ui.askUserForShoot();
     }
 
     @Override
